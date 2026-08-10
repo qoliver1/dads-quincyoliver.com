@@ -45,10 +45,6 @@ function Hero() {
       <video ref={videoRef} className="hero-local-video" src="./media/intro-movie.mp4" autoPlay loop playsInline controls preload="metadata" onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} />
       <div className="video-shade" />
     </div>
-    <div className="hero-video-controls">
-      <button onClick={togglePlay} aria-label={playing ? 'Pause video' : 'Play video'}>{playing ? 'Pause' : 'Play'} <span>{playing ? '||' : '>'}</span></button>
-      <button onClick={toggleSound} aria-label={soundOn ? 'Mute video' : 'Turn sound on'}>{soundOn ? 'Sound on' : 'Sound off'} <span>{soundOn ? '))' : 'x'}</span></button>
-    </div>
     <div className="scroll-cue">Scroll to explore <ArrowDownRight size={16} /></div>
   </section>;
 }
@@ -64,6 +60,7 @@ function Footer() { return <footer className="footer section" id="contact"><div 
 
 function App() { return <><Navbar /><main><Hero /><Intro /><Testimonials /><Speaking /><AboutBooks /></main><Footer /></>; }
 createRoot(document.getElementById('root')).render(<App />);
+
 
 
 
