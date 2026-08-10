@@ -1,9 +1,8 @@
 ﻿import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { ArrowDownRight, ArrowUpRight, Menu, X, Play, Quote, Mail, MapPin } from 'lucide-react';
+import { ArrowDownRight, ArrowUpRight, Menu, X, Quote, Mail, MapPin } from 'lucide-react';
 import './styles.css';
 
-const heroYoutubeUrl = 'https://www.youtube.com/watch?v=--8Q9W36G_Q';
 
 const testimonials = [
   { quote: 'POWERHOUSE and an excellent communicator!', name: 'American Express Company', role: 'Client testimonial', image: 'https://quincyoliver.com/wp-content/uploads/2017/12/ON_Air-250x250.png' },
@@ -23,14 +22,20 @@ function Navbar() {
 }
 
 function Hero() {
-  const iframeRef = React.useRef(null);
+  const videoRef = React.useRef(null);
   const [playing, setPlaying] = React.useState(true);
   const [soundOn, setSoundOn] = React.useState(true);
-  const embed = heroYoutubeUrl ? `https://www.youtube.com/embed/${(heroYoutubeUrl.match(/(?:v=|youtu\.be\/)([^&?/]+)/) || [])[1] || heroYoutubeUrl}` : '';
-  const sendCommand = (func) => iframeRef.current?.contentWindow?.postMessage(JSON.stringify({ event: 'command', func, args: [] }), '*');
-  const togglePlay = () => { sendCommand(playing ? 'pauseVideo' : 'playVideo'); setPlaying(!playing); };
-  const toggleSound = () => { sendCommand(soundOn ? 'mute' : 'unMute'); setSoundOn(!soundOn); };
-  return <section className="hero" id="top"><div className="hero-video">{embed ? <iframe ref={iframeRef} src={`${embed}?autoplay=1&mute=0&loop=1&playlist=${embed.split('/').pop()}&rel=0&modestbranding=1&cc_load_policy=0&iv_load_policy=3&playsinline=1&enablejsapi=1`} title="Quincy Oliver speaking" allow="autoplay; fullscreen; picture-in-picture" /> : <div className="video-placeholder"><div className="play-ring"><Play fill="currentColor" size={23} /></div><span>YouTube hero video ready</span><small>YouTube hero video</small></div>}<div className="video-shade" /></div><div className="hero-content"><p className="eyebrow"><span className="eyebrow-line" /> Speaker · Author · Catalyst</p><h1>The most <em>dangerous</em><br />speaker in <span>North America.</span></h1><p className="hero-copy">Quincy Oliver turns bold ideas into brave action. For leaders ready to shift the room — and the world.</p><div className="hero-actions"><Button href="#speaking">Bring the energy</Button><a href="#about" className="text-link">Discover Quincy <ArrowDownRight size={18} /></a></div></div>{embed && <div className="hero-video-controls"><button onClick={togglePlay} aria-label={playing ? 'Pause video' : 'Play video'}>{playing ? 'Pause' : 'Play'} <span>{playing ? '||' : '>'}</span></button><button onClick={toggleSound} aria-label={soundOn ? 'Mute video' : 'Turn sound on'}>{soundOn ? 'Sound on' : 'Sound off'} <span>{soundOn ? '))' : 'x'}</span></button></div>}<div className="hero-note">Most Dangerous Speaker<sup>®</sup><br /><span>Since 2007</span></div><div className="scroll-cue">Scroll to explore <ArrowDownRight size={16} /></div></section>;
+  const togglePlay = () => {
+    if (!videoRef.current) return;
+    if (videoRef.current.paused) { videoRef.current.play(); setPlaying(true); }
+    else { videoRef.current.pause(); setPlaying(false); }
+  };
+  const toggleSound = () => {
+    if (!videoRef.current) return;
+    videoRef.current.muted = soundOn;
+    setSoundOn(!soundOn);
+  };
+  return <section className="hero" id="top"><div className="hero-video"><video ref={videoRef} className="hero-local-video" src="./media/intro-movie.mp4" autoPlay loop playsInline controls preload="metadata" onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} /><div className="video-shade" /></div><div className="hero-content"><p className="eyebrow"><span className="eyebrow-line" /> Speaker · Author · Catalyst</p><h1>The most <em>dangerous</em><br />speaker in <span>North America.</span></h1><p className="hero-copy">Quincy Oliver turns bold ideas into brave action. For leaders ready to shift the room — and the world.</p><div className="hero-actions"><Button href="#speaking">Bring the energy</Button><a href="#about" className="text-link">Discover Quincy <ArrowDownRight size={18} /></a></div></div><div className="hero-video-controls"><button onClick={togglePlay} aria-label={playing ? 'Pause video' : 'Play video'}>{playing ? 'Pause' : 'Play'} <span>{playing ? '||' : '>'}</span></button><button onClick={toggleSound} aria-label={soundOn ? 'Mute video' : 'Turn sound on'}>{soundOn ? 'Sound on' : 'Sound off'} <span>{soundOn ? '))' : 'x'}</span></button></div><div className="hero-note">Most Dangerous Speaker<sup>®</sup><br /><span>Since 2007</span></div><div className="scroll-cue">Scroll to explore <ArrowDownRight size={16} /></div></section>;
 }
 
 function Intro() { return <section className="intro section"><p className="eyebrow">01 / The difference</p><div className="intro-grid"><h2>He doesn't just<br /><i>fill a stage.</i></h2><div><p className="lead">He changes what happens next.</p><p className="body-copy">Quincy brings a clear message, strong communication and a memorable presence to every room.</p><a className="arrow-link" href="#about">His story <ArrowUpRight size={18} /></a></div></div></section>; }
@@ -45,6 +50,8 @@ function Footer() { return <footer className="footer section" id="contact"><div 
 
 function App() { return <><Navbar /><main><Hero /><Intro /><Testimonials /><Speaking /><AboutBooks /></main><Footer /></>; }
 createRoot(document.getElementById('root')).render(<App />);
+
+
 
 
 
