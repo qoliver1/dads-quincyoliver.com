@@ -35,9 +35,23 @@ function Hero() {
     videoRef.current.muted = soundOn;
     setSoundOn(!soundOn);
   };
-  return <section className="hero" id="top"><div className="hero-video"><video ref={videoRef} className="hero-local-video" src="./media/intro-movie.mp4" autoPlay loop playsInline controls preload="metadata" onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} /><div className="video-shade" /></div><div className="hero-content"><p className="eyebrow"><span className="eyebrow-line" /> Speaker · Author · Catalyst</p><h1>The most <em>dangerous</em><br />speaker in <span>North America.</span></h1><p className="hero-copy">Quincy Oliver turns bold ideas into brave action. For leaders ready to shift the room — and the world.</p><div className="hero-actions"><Button href="#speaking">Bring the energy</Button><a href="#about" className="text-link">Discover Quincy <ArrowDownRight size={18} /></a></div></div><div className="hero-video-controls"><button onClick={togglePlay} aria-label={playing ? 'Pause video' : 'Play video'}>{playing ? 'Pause' : 'Play'} <span>{playing ? '||' : '>'}</span></button><button onClick={toggleSound} aria-label={soundOn ? 'Mute video' : 'Turn sound on'}>{soundOn ? 'Sound on' : 'Sound off'} <span>{soundOn ? '))' : 'x'}</span></button></div><div className="hero-note">Most Dangerous Speaker<sup>®</sup><br /><span>Since 2007</span></div><div className="scroll-cue">Scroll to explore <ArrowDownRight size={16} /></div></section>;
+  return <section className="hero" id="top">
+    <div className="hero-content">
+      <p className="hero-name">QUINCY OLIVER</p>
+      <h1 className="hero-tagline">THE MOST DANGEROUS SPEAKER IN NORTH AMERICA<sup>®</sup></h1>
+      <p className="hero-roles">SPEAKER <span>—</span> INFLUENCER <span>—</span> AUTHOR <span>—</span> ENTREPRENEUR</p>
+    </div>
+    <div className="hero-video">
+      <video ref={videoRef} className="hero-local-video" src="./media/intro-movie.mp4" autoPlay loop playsInline controls preload="metadata" onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} />
+      <div className="video-shade" />
+    </div>
+    <div className="hero-video-controls">
+      <button onClick={togglePlay} aria-label={playing ? 'Pause video' : 'Play video'}>{playing ? 'Pause' : 'Play'} <span>{playing ? '||' : '>'}</span></button>
+      <button onClick={toggleSound} aria-label={soundOn ? 'Mute video' : 'Turn sound on'}>{soundOn ? 'Sound on' : 'Sound off'} <span>{soundOn ? '))' : 'x'}</span></button>
+    </div>
+    <div className="scroll-cue">Scroll to explore <ArrowDownRight size={16} /></div>
+  </section>;
 }
-
 function Intro() { return <section className="intro section"><p className="eyebrow">01 / The difference</p><div className="intro-grid"><h2>He doesn't just<br /><i>fill a stage.</i></h2><div><p className="lead">He changes what happens next.</p><p className="body-copy">Quincy brings a clear message, strong communication and a memorable presence to every room.</p><a className="arrow-link" href="#about">His story <ArrowUpRight size={18} /></a></div></div></section>; }
 
 function Testimonials() { const [active, setActive] = React.useState(0); return <section className="quote-section section"><div className="section-top"><p className="eyebrow">02 / In their words</p><span className="count">0{active + 1} — 0{testimonials.length}</span></div><div className="quote-wrap"><Quote className="quote-mark" size={62} /><blockquote>&ldquo;{testimonials[active].quote}&rdquo;</blockquote><div className="quote-author"><div className="author-info"><img className="testimonial-avatar" src={testimonials[active].image} alt="" /><div><strong>{testimonials[active].name}</strong><span>{testimonials[active].role}</span></div></div><div className="quote-controls"><button onClick={() => setActive((active + testimonials.length - 1) % testimonials.length)}>&larr;</button><button onClick={() => setActive((active + 1) % testimonials.length)}>&rarr;</button></div></div></div></section>; }
@@ -50,6 +64,7 @@ function Footer() { return <footer className="footer section" id="contact"><div 
 
 function App() { return <><Navbar /><main><Hero /><Intro /><Testimonials /><Speaking /><AboutBooks /></main><Footer /></>; }
 createRoot(document.getElementById('root')).render(<App />);
+
 
 
 
